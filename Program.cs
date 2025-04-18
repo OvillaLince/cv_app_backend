@@ -1,35 +1,33 @@
 using Microsoft.EntityFrameworkCore;
-using MyApi.Data; // replace with your actual namespace
+using MyApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DbContext with PostgreSQL
+// Add DbContext with timeout
 builder.Services.AddDbContext<ProjectsContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-    npgsqlOptions => npgsqlOptions.CommandTimeout(60)
-    ));
+                      npgsqlOptions => npgsqlOptions.CommandTimeout(60))
+);
 
 // Add controllers
 builder.Services.AddControllers();
 
-// Enable CORS for all origins
+// CORS policies
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-    options.AddPolicy("AllowFrontend",
-       policy =>
-       {
-           policy.WithOrigins("https://ovillalince.github.io")
-                 .AllowAnyMethod()
-                 .AllowAnyHeader();
-       });
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("https://ovillalince.github.io")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
+// Use ONLY the correct CORS policy
 app.UseCors("AllowFrontend");
+
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
