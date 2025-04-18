@@ -15,6 +15,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowFrontend",
+       policy =>
+       {
+           policy.WithOrigins("https://ovillalince.github.io")
+                 .AllowAnyMethod()
+                 .AllowAnyHeader();
+       });
 });
 
 var app = builder.Build();
