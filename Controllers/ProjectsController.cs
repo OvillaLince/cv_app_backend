@@ -20,11 +20,20 @@ namespace MyApi.Controllers
         [HttpGet("projects/all")]
         public async Task<IActionResult> GetAllProjects()
         {
-            var dbProjects = await _context.DBProjects.AsNoTracking().ToListAsync();
-            var dsProjects = await _context.DSProjects.AsNoTracking().ToListAsync();
+            var dbProjects = await _context.DBProjects
+                .AsNoTracking()
+                .Select(p => new { p.Id, p.Title, p.Image, p.CodeFile }) // lightweight
+                .ToListAsync();
 
-            return Ok(new { dbProjects, dsProjects });
+            var dsProjects = await _context.DSProjects
+                .AsNoTracking()
+                .Select(p => new { p.Id, p.Title, p.Image, p.CodeFile }) // avoid loading huge strings
+                .ToListAsync();
+
+            var results = new { dbProjects, dsProjects }
+            return Ok(results);
         }
+
 
         [HttpGet("projects/db")]
 		public IActionResult GetDbProjects()
