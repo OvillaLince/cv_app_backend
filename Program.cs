@@ -1,18 +1,14 @@
-using Microsoft.EntityFrameworkCore;
-using MyApi.Data;
+﻿var builder = WebApplication.CreateBuilder(args);
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add DbContext with timeout
+// PostgreSQL with 60s timeout
 builder.Services.AddDbContext<ProjectsContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-                      npgsqlOptions => npgsqlOptions.CommandTimeout(60))
-);
+                      npgsqlOptions => npgsqlOptions.CommandTimeout(60)));
 
 // Add controllers
 builder.Services.AddControllers();
 
-// CORS policies
+// CORS setup
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -25,9 +21,19 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Use ONLY the correct CORS policy
-app.UseCors("AllowFrontend");
+// Handle global exceptions
+app.UseExceptionHandler(appBuilder =>
+{
+    appBuilder.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsync("{\"error\":\"Unexpected server error\"}");
+    });
+});
 
+app.UseHttpsRedirection();           // Optional but recommended
+app.UseCors("AllowFrontend");        //CORS must come before Authorization
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();

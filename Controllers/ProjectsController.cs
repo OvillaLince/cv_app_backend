@@ -20,18 +20,26 @@ namespace MyApi.Controllers
         [HttpGet("projects/all")]
         public async Task<IActionResult> GetAllProjects()
         {
-            var dbProjects = await _context.DBProjects
-                .AsNoTracking()
-                .Select(p => new { p.Id, p.Title, p.Image, p.CodeFile }) // lightweight
-                .ToListAsync();
+            try
+            {
+                var dbProjects = await _context.DBProjects
+                    .AsNoTracking()
+                    .Select(p => new { p.Id, p.Title, p.Image, p.CodeFile })
+                    .ToListAsync();
 
-            var dsProjects = await _context.DSProjects
-                .AsNoTracking()
-                .Select(p => new { p.Id, p.Title, p.Image, p.CodeFile }) // avoid loading huge strings
-                .ToListAsync();
+                var dsProjects = await _context.DSProjects
+                    .AsNoTracking()
+                    .Select(p => new { p.Id, p.Title, p.Image, p.CodeFile })
+                    .ToListAsync();
+                var results = new Projects { dbProject = dbProjects, dsProject = dsProjects };
 
-            var results = new Projects { dbProject = dbProjects, dsProject=dsProjects };
-            return Ok(results);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ /projects/all failed: {ex.Message}");
+                return StatusCode(500, new { error = ex.Message }); // ensures headers are returned
+            }
         }
 
 
