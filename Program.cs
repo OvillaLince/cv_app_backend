@@ -29,7 +29,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 app.UseCors("AllowAll");
-
+app.UseCors("AllowFrontend");
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
