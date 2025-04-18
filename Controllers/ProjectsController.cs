@@ -20,30 +20,6 @@ namespace MyApi.Controllers
 		[HttpGet("projects/db")]
 		public IActionResult GetDbProjects()
 		{
-            var visitorCountPath = Path.Combine(Directory.GetCurrentDirectory(), "visitor_count.txt");
-
-            try
-            {
-                int currentCount = 0;
-
-                // Read existing count if file exists
-                if (System.IO.File.Exists(visitorCountPath))
-                {
-                    var content = System.IO.File.ReadAllText(visitorCountPath);
-                    int.TryParse(content, out currentCount);
-                }
-
-                // Increment and save
-                currentCount++;
-                System.IO.File.WriteAllText(visitorCountPath, currentCount.ToString());
-
-                Console.WriteLine($"[DS Access] Total visits: {currentCount}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[DS Access] Failed to update visitor count: {ex.Message}");
-            }
-
 
             var dbProjects = _context.DBProjects.ToList();
 
