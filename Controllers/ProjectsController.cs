@@ -44,7 +44,6 @@ namespace MyApi.Controllers
                     })
                     .ToListAsync();
                 var results = new Projects { dbProject = dbProjects, dsProject = dsProjects };
-
                 return Ok(results);
             }
             catch (Exception ex)
@@ -72,7 +71,7 @@ namespace MyApi.Controllers
 			return Ok(dsProjects);
 		}
 
-        [HttpGet("ping")]
+        [HttpHead("ping")]
         public async Task<IActionResult> PingDatabase()
         {
             try
