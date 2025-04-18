@@ -18,7 +18,7 @@ namespace MyApi.Controllers
 		}
 
 		[HttpGet("db")]
-		public Task<IActionResult> GetDbProjects()
+		public IActionResult GetDbProjects()
 		{
 			var dbProjects = _context.DBProjects
 				.ToList();
@@ -27,7 +27,7 @@ namespace MyApi.Controllers
 		}
 
 		[HttpGet("ds")]
-		public Task<IActionResult> GetDsProjects()
+		public IActionResult GetDsProjects()
 		{
 			var dsProjects = _context.DSProjects
 				.ToList();
