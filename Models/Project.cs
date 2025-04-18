@@ -1,5 +1,11 @@
 namespace MyApi.Models
 {
+    public class Projects
+    {
+        public DBProject dbProject { get; set; }
+        public DSProject dsProject { get; set; }
+    }
+    
     public class DSProject
     {
         public int Id { get; set; }

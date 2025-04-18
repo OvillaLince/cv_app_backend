@@ -17,7 +17,23 @@ namespace MyApi.Controllers
 			_context = context;
 		}
 
-		[HttpGet("projects/db")]
+        [HttpGet("projects/all")]
+        public IActionResult GetDbProjects()
+        {
+
+            var dbProjects = _context.DBProjects.ToList();
+            var dsProjects = _context.DSProjects.ToList();
+
+            var result = new
+            {
+                dbProjects,
+                dsProjects
+            };
+            return Ok(dbProjects);
+        }
+
+
+        [HttpGet("projects/db")]
 		public IActionResult GetDbProjects()
 		{
 
