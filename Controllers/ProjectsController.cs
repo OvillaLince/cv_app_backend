@@ -3,7 +3,8 @@ using MyApi.Data;
 using MyApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-
+using Npgsql;
+using Dapper;
 namespace MyApi.Controllers
 {
 	[ApiController]
@@ -70,6 +71,15 @@ namespace MyApi.Controllers
 
 			return Ok(dsProjects);
 		}
+
+
+        [HttpGet("projects/ds/test")]
+        public async Task<IActionResult> GetDSProjects()
+        {
+            using var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            var projects = await conn.QueryAsync<DSProject>("SELECT * FROM \"DSProjects\"");
+            return Ok(projects);
+        }
 
         [HttpHead("ping")]
         public async Task<IActionResult> PingDatabase()
