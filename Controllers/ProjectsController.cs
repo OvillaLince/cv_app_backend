@@ -20,9 +20,6 @@ namespace MyApi.Controllers
 		[HttpGet("projects/db")]
 		public IActionResult GetDbProjects()
 		{
-            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
-            var visitorLogPath = Path.Combine(Directory.GetCurrentDirectory(), "visitors.txt");
-
             var visitorLogPath = Path.Combine(Directory.GetCurrentDirectory(), "visitors.txt");
 
             // Get IP address or fallback to "Anon"
