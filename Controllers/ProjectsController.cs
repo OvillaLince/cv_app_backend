@@ -23,30 +23,21 @@ namespace MyApi.Controllers
             var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
             var visitorLogPath = Path.Combine(Directory.GetCurrentDirectory(), "visitors.txt");
 
-            if (!string.IsNullOrEmpty(ipAddress))
+            var visitorLogPath = Path.Combine(Directory.GetCurrentDirectory(), "visitors.txt");
+
+            // Get IP address or fallback to "Anon"
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Anon";
+
+            try
             {
-                HashSet<string> existingIps = new();
-
-                // Read existing IPs (sync)
-                if (System.IO.File.Exists(visitorLogPath))
-                {
-                    var lines = System.IO.File.ReadAllLines(visitorLogPath);
-                    existingIps = new HashSet<string>(lines);
-                }
-
-                // Append new IP if not already tracked
-                if (!existingIps.Contains(ipAddress))
-                {
-                    System.IO.File.AppendAllText(visitorLogPath, ipAddress + Environment.NewLine);
-                    Console.WriteLine($"[DS Access] New IP: {ipAddress} | Total: {existingIps.Count + 1}");
-                }
-                else
-                {
-                    Console.WriteLine($"[DS Access] Known IP: {ipAddress}");
-                }
+                // Log every access (even repeated ones) synchronously
+                System.IO.File.AppendAllText(visitorLogPath, ipAddress + Environment.NewLine);
+                Console.WriteLine($"[DS Access] IP logged: {ipAddress}");
             }
-
-
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DS Access] Failed to log IP: {ex.Message}");
+            }
 
 
             var dbProjects = _context.DBProjects.ToList();
@@ -57,8 +48,7 @@ namespace MyApi.Controllers
 		[HttpGet("projects/ds")]
 		public IActionResult GetDsProjects()
 		{
-			var dsProjects = _context.DSProjects
-				.ToList();
+			var dsProjects = _context.DSProjects.ToList();
 
 			return Ok(dsProjects);
 		}
