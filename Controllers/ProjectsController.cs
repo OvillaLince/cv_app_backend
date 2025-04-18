@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MyApi.Controllers
 {
 	[ApiController]
-	[Route("api/projects")]
+	[Route("api")]
 	public class ProjectsController : ControllerBase
 	{
 		private readonly ProjectsContext _context;
@@ -17,7 +17,7 @@ namespace MyApi.Controllers
 			_context = context;
 		}
 
-		[HttpGet("db")]
+		[HttpGet("projects/db")]
 		public IActionResult GetDbProjects()
 		{
 			var dbProjects = _context.DBProjects
@@ -26,7 +26,7 @@ namespace MyApi.Controllers
 			return Ok(dbProjects);
 		}
 
-		[HttpGet("ds")]
+		[HttpGet("projects/ds")]
 		public IActionResult GetDsProjects()
 		{
 			var dsProjects = _context.DSProjects
@@ -34,21 +34,11 @@ namespace MyApi.Controllers
 
 			return Ok(dsProjects);
 		}
-	}
-    [ApiController]
-    [Route("api")]
-    public class ProjectsController : ControllerBase
-    {
 
         [HttpGet("ping")]
-        public IActionResult GetDbProjects()
+        public IActionResult Ping()
         {
-            public IActionResult Ping()
-            {
-                return Ok("pong");
-            }
+			return Ok("pong");
         }
-
-       
     }
 }
