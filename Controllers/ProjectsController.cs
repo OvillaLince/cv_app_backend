@@ -73,21 +73,17 @@ namespace MyApi.Controllers
 		}
 
         [HttpGet("ping")]
-        public async Task<IActionResult> PingDb()
+        public async Task<IActionResult> PingDatabase()
         {
             try
             {
-                var canConnect = await _context.Database.CanConnectAsync();
-
-                if (canConnect)
-                    return Ok(new { status = "Supabase database is reachable" });
-
-                return StatusCode(500, new { status = "Supabase not reachable" });
+                // Simple DB test query
+                var test = await _context.DBProjects.FirstOrDefaultAsync();
+                return Ok(new { status = "Database is connected" });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"PingDb error: {ex.Message}");
-                return StatusCode(500, new { status = "Database error", error = ex.Message });
+                return StatusCode(500, new { status = "Database unreachable", error = ex.Message });
             }
         }
 
