@@ -18,7 +18,7 @@ namespace MyApi.Controllers
 		}
 
         [HttpGet("projects/all")]
-        public IActionResult GetDbProjects()
+        public IActionResult GetAllProjects()
         {
 
             var dbProjects = _context.DBProjects.ToList();
@@ -29,7 +29,7 @@ namespace MyApi.Controllers
                 dbProjects,
                 dsProjects
             };
-            return Ok(dbProjects);
+            return Ok(result);
         }
 
 
