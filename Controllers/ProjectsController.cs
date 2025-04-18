@@ -24,12 +24,24 @@ namespace MyApi.Controllers
             {
                 var dbProjects = await _context.DBProjects
                     .AsNoTracking()
-                    .Select(p => new { p.Id, p.Title, p.Image, p.CodeFile })
+                    .Select(p => new DBProject
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Image = p.Image,
+                        CodeFile = p.CodeFile
+                    })
                     .ToListAsync();
 
                 var dsProjects = await _context.DSProjects
                     .AsNoTracking()
-                    .Select(p => new { p.Id, p.Title, p.Image, p.CodeFile })
+                    .Select(p => new DSProject
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Image = p.Image,
+                        CodeFile = p.CodeFile
+                    })
                     .ToListAsync();
                 var results = new Projects { dbProject = dbProjects, dsProject = dsProjects };
 
@@ -37,7 +49,7 @@ namespace MyApi.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ /projects/all failed: {ex.Message}");
+                Console.WriteLine($" /projects/all failed: {ex.Message}");
                 return StatusCode(500, new { error = ex.Message }); // ensures headers are returned
             }
         }

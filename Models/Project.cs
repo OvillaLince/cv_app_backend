@@ -2,8 +2,8 @@ namespace MyApi.Models
 {
     public class Projects
     {
-        public List<DBProject> dbProject { get; set; }
-        public List<DSProject> dsProject { get; set; }
+        public List<DBProject> dbProject { get; set; } = new();
+        public List<DSProject> dsProject { get; set; } = new();
     }
     
     public class DSProject
@@ -19,5 +19,5 @@ namespace MyApi.Models
     public string Title { get; set; } = null!;
     public string? CodeFile { get; set; } = null!;
     public string? Image { get; set; }
-}
+    }
 }

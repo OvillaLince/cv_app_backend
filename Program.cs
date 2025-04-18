@@ -1,4 +1,8 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using MyApi.Data;
+using Microsoft.EntityFrameworkCore; // already present
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // PostgreSQL with 60s timeout
 builder.Services.AddDbContext<ProjectsContext>(options =>
