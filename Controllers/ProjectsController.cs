@@ -30,7 +30,7 @@ namespace MyApi.Controllers
                 .Select(p => new { p.Id, p.Title, p.Image, p.CodeFile }) // avoid loading huge strings
                 .ToListAsync();
 
-            var results = new { dbProjects, dsProjects };
+            var results = new Projects { dbProject = dbProjects, dsProject=dsProjects };
             return Ok(results);
         }
 

@@ -2,8 +2,8 @@ namespace MyApi.Models
 {
     public class Projects
     {
-        public DBProject dbProject { get; set; }
-        public DSProject dsProject { get; set; }
+        public List<DBProject> dbProject { get; set; }
+        public List<DSProject> dsProject { get; set; }
     }
     
     public class DSProject
