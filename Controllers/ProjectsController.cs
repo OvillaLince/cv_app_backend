@@ -18,18 +18,18 @@ namespace MyApi.Controllers
 		}
 
 		[HttpGet("db")]
-		public async Task<IActionResult> GetDbProjects()
+		public Task<IActionResult> GetDbProjects()
 		{
-			var dbProjects = await _context.DBProjects
+			var dbProjects = _context.DBProjects
 				.ToList();
 
 			return Ok(dbProjects);
 		}
 
 		[HttpGet("ds")]
-		public async Task<IActionResult> GetDsProjects()
+		public Task<IActionResult> GetDsProjects()
 		{
-			var dsProjects = await _context.DSProjects
+			var dsProjects = _context.DSProjects
 				.ToList();
 
 			return Ok(dsProjects);
