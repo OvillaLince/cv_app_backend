@@ -20,20 +20,28 @@ namespace MyApi.Controllers
 		[HttpGet("projects/db")]
 		public IActionResult GetDbProjects()
 		{
-            var visitorLogPath = Path.Combine(Directory.GetCurrentDirectory(), "visitors.txt");
-
-            // Get IP address or fallback to "Anon"
-            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Anon";
+            var visitorCountPath = Path.Combine(Directory.GetCurrentDirectory(), "visitor_count.txt");
 
             try
             {
-                // Log every access (even repeated ones) synchronously
-                System.IO.File.AppendAllText(visitorLogPath, ipAddress + Environment.NewLine);
-                Console.WriteLine($"[DS Access] IP logged: {ipAddress}");
+                int currentCount = 0;
+
+                // Read existing count if file exists
+                if (System.IO.File.Exists(visitorCountPath))
+                {
+                    var content = System.IO.File.ReadAllText(visitorCountPath);
+                    int.TryParse(content, out currentCount);
+                }
+
+                // Increment and save
+                currentCount++;
+                System.IO.File.WriteAllText(visitorCountPath, currentCount.ToString());
+
+                Console.WriteLine($"[DS Access] Total visits: {currentCount}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[DS Access] Failed to log IP: {ex.Message}");
+                Console.WriteLine($"[DS Access] Failed to update visitor count: {ex.Message}");
             }
 
 
@@ -59,38 +67,19 @@ namespace MyApi.Controllers
         [HttpGet("visitors")]
         public IActionResult GetVisitorListAndAccessCounts()
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "visitors.txt");
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "visitor_count.txt");
 
-            if (!System.IO.File.Exists(path))
+            int count = 0;
+
+            if (System.IO.File.Exists(path))
             {
-                return Ok(new
-                {
-                    totalVisitors = 0,
-                    uniqueVisitors = 0,
-                    visitorStats = new List<object>()
-                });
+                var content = System.IO.File.ReadAllText(path);
+                int.TryParse(content, out count);
             }
-
-            var lines = System.IO.File.ReadAllLines(path);
-
-            // Count number of accesses per IP
-            var ipCounts = lines
-                .GroupBy(ip => ip)
-                .ToDictionary(group => group.Key, group => group.Count());
-
-            var visitorStats = ipCounts
-                .Select(entry => new
-                {
-                    ip = entry.Key,
-                    accessCount = entry.Value
-                })
-                .ToList();
 
             return Ok(new
             {
-                totalVisitors = lines.Length,
-                uniqueVisitors = ipCounts.Count,
-                visitorStats = visitorStats
+                totalVisitors = count
             });
         }
 
