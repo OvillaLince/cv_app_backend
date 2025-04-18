@@ -35,4 +35,20 @@ namespace MyApi.Controllers
 			return Ok(dsProjects);
 		}
 	}
+    [ApiController]
+    [Route("api")]
+    public class ProjectsController : ControllerBase
+    {
+
+        [HttpGet("ping")]
+        public IActionResult GetDbProjects()
+        {
+            public IActionResult Ping()
+            {
+                return Ok("pong");
+            }
+        }
+
+       
+    }
 }
