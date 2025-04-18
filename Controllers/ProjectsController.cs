@@ -68,5 +68,44 @@ namespace MyApi.Controllers
         {
 			return Ok("pong");
         }
+
+        [HttpGet("visitors")]
+        public IActionResult GetVisitorListAndAccessCounts()
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "visitors.txt");
+
+            if (!System.IO.File.Exists(path))
+            {
+                return Ok(new
+                {
+                    totalVisitors = 0,
+                    uniqueVisitors = 0,
+                    visitorStats = new List<object>()
+                });
+            }
+
+            var lines = System.IO.File.ReadAllLines(path);
+
+            // Count number of accesses per IP
+            var ipCounts = lines
+                .GroupBy(ip => ip)
+                .ToDictionary(group => group.Key, group => group.Count());
+
+            var visitorStats = ipCounts
+                .Select(entry => new
+                {
+                    ip = entry.Key,
+                    accessCount = entry.Value
+                })
+                .ToList();
+
+            return Ok(new
+            {
+                totalVisitors = lines.Length,
+                uniqueVisitors = ipCounts.Count,
+                visitorStats = visitorStats
+            });
+        }
+
     }
 }
