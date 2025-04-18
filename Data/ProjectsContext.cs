@@ -7,6 +7,8 @@ namespace MyApi.Data
     {
         public ProjectsContext(DbContextOptions<ProjectsContext> options) : base(options) { }
 
-        public DbSet<Project> Projects { get; set; }
+        public DbSet<DBProject> DBProjects { get; set; }
+        public DbSet<DSProject> DSProjects { get; set; }
+
     }
 }

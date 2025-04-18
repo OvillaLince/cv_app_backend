@@ -20,7 +20,7 @@ namespace MyApi.Controllers
 		[HttpGet("db")]
 		public async Task<IActionResult> GetDbProjects()
 		{
-			var dbProjects = await _context.Projects
+			var dbProjects = await _context.DBProjects
 				.ToListAsync();
 
 			return Ok(dbProjects);
@@ -29,7 +29,7 @@ namespace MyApi.Controllers
 		[HttpGet("ds")]
 		public async Task<IActionResult> GetDsProjects()
 		{
-			var dsProjects = await _context.Projects
+			var dsProjects = await _context.DSProjects
 				.ToListAsync();
 
 			return Ok(dsProjects);
