@@ -12,11 +12,14 @@ namespace MyApi.Controllers
 	public class ProjectsController : ControllerBase
 	{
 		private readonly ProjectsContext _context;
+        private readonly IConfiguration _configuration;
 
-		public ProjectsController(ProjectsContext context)
+        public ProjectsController(ProjectsContext context, IConfiguration configuration)
 		{
 			_context = context;
-		}
+            _configuration = configuration;
+
+        }
 
         [HttpGet("projects/all")]
         public async Task<IActionResult> GetAllProjects()
@@ -64,7 +67,7 @@ namespace MyApi.Controllers
 			return Ok(dbProjects);
 		}
 
-		[HttpGet("projects/ds")]
+		[HttpGet("project/ds")]
 		public IActionResult GetDsProjects()
 		{
 			var dsProjects = _context.DSProjects.ToList();
@@ -73,7 +76,7 @@ namespace MyApi.Controllers
 		}
 
 
-        [HttpGet("projects/ds/test")]
+        [HttpGet("proj/ds/test")]
         public async Task<IActionResult> GetDSProjects()
         {
             using var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));

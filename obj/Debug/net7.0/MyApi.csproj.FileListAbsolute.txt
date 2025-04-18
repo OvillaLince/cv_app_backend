@@ -40,5 +40,6 @@ C:\Users\octav\FullStackApp\MyApi\obj\Debug\net7.0\refint\MyApi.dll
 C:\Users\octav\FullStackApp\MyApi\obj\Debug\net7.0\MyApi.pdb
 C:\Users\octav\FullStackApp\MyApi\obj\Debug\net7.0\MyApi.genruntimeconfig.cache
 C:\Users\octav\FullStackApp\MyApi\obj\Debug\net7.0\ref\MyApi.dll
-C:\Users\octav\FullStackApp\MyApi\obj\Debug\net7.0\MyApi.sourcelink.json
-C:\Users\octav\FullStackApp\MyApi\obj\Debug\net7.0\MyApi.csproj.Up2Date
+C:\Users\octav\FullStackApp\MyApi\bin\Debug\net7.0\Dapper.dll
+C:\Users\octav\FullStackApp\MyApi\bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\octav\FullStackApp\MyApi\obj\Debug\net7.0\MyApi.csproj.CopyComplete
