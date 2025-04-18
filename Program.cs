@@ -15,9 +15,9 @@ builder.Services.AddControllers();
 // CORS policies
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("https://ovillalince.github.io")
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Use ONLY the correct CORS policy
-app.UseCors();
+app.UseCors("AllowFrontend");
 
 app.UseRouting();
 app.UseAuthorization();

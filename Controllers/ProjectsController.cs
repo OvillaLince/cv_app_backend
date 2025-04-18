@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyApi.Data;
 using MyApi.Models;
 using Microsoft.EntityFrameworkCore;
@@ -44,10 +44,24 @@ namespace MyApi.Controllers
 		}
 
         [HttpGet("ping")]
-        public IActionResult Ping()
+        public async Task<IActionResult> PingDb()
         {
-			return Ok("pong");
+            try
+            {
+                var canConnect = await _context.Database.CanConnectAsync();
+
+                if (canConnect)
+                    return Ok(new { status = "Supabase database is reachable" });
+
+                return StatusCode(500, new { status = "Supabase not reachable" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"PingDb error: {ex.Message}");
+                return StatusCode(500, new { status = "Database error", error = ex.Message });
+            }
         }
+
 
         [HttpGet("visitors")]
         public IActionResult GetVisitorListAndAccessCounts()
