@@ -5,7 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add DbContext with PostgreSQL
 builder.Services.AddDbContext<ProjectsContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    npgsqlOptions => npgsqlOptions.CommandTimeout(60)
+    ));
 
 // Add controllers
 builder.Services.AddControllers();

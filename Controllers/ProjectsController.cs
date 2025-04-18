@@ -18,20 +18,13 @@ namespace MyApi.Controllers
 		}
 
         [HttpGet("projects/all")]
-        public IActionResult GetAllProjects()
+        public async Task<IActionResult> GetAllProjects()
         {
+            var dbProjects = await _context.DBProjects.AsNoTracking().ToListAsync();
+            var dsProjects = await _context.DSProjects.AsNoTracking().ToListAsync();
 
-            var dbProjects = _context.DBProjects.ToList();
-            var dsProjects = _context.DSProjects.ToList();
-
-            var result = new
-            {
-                dbProjects,
-                dsProjects
-            };
-            return Ok(result);
+            return Ok(new { dbProjects, dsProjects });
         }
-
 
         [HttpGet("projects/db")]
 		public IActionResult GetDbProjects()
