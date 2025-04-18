@@ -11,7 +11,7 @@ builder.Services.AddDbContext<ProjectsContext>(options =>
 
 // Add controllers
 builder.Services.AddControllers();
-
+builder.Services.AddResponseCompression();
 // CORS setup
 builder.Services.AddCors(options =>
 {
@@ -35,7 +35,7 @@ app.UseExceptionHandler(appBuilder =>
         await context.Response.WriteAsync("{\"error\":\"Unexpected server error\"}");
     });
 });
-
+app.UseResponseCompression();
 app.UseHttpsRedirection();           // Optional but recommended
 app.UseCors("AllowFrontend");        //CORS must come before Authorization
 app.UseRouting();
