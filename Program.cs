@@ -7,7 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 // PostgreSQL with 60s timeout
 builder.Services.AddDbContext<ProjectsContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-                      npgsqlOptions => npgsqlOptions.CommandTimeout(60)));
+                      npgsqlOptions => {
+                          npgsqlOptions.CommandTimeout(30);
+                          npgsqlOptions.EnableRetryOnFailure(
+                              maxRetryCount: 5,
+                              maxRetryDelay: TimeSpan.FromSeconds(5),
+                              errorCodesToAdd: null
+                              );
+                      }));
 
 // Add controllers
 builder.Services.AddControllers();
