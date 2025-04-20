@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ProjectsContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
                       npgsqlOptions => {
-                          npgsqlOptions.CommandTimeout(30);
+                          npgsqlOptions.CommandTimeout(10);
                           npgsqlOptions.EnableRetryOnFailure(
                               maxRetryCount: 5,
                               maxRetryDelay: TimeSpan.FromSeconds(5),
